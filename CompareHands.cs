@@ -57,7 +57,7 @@
             return (CompareHighestCard(hand1, hand2), "High Card"); // No special hand, highest card wins
         }
 
-        private static Hand CompareSameTypeHands(Hand hand1, Hand hand2)
+        public static Hand CompareSameTypeHands(Hand hand1, Hand hand2)
         {
             var ranks = "23456789TJQKA";
             var sorted1 = hand1.Cards.OrderBy(c => ranks.IndexOf(c.Rank)).ToList();
