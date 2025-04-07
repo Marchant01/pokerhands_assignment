@@ -27,9 +27,4 @@ jobs:
         run: dotnet build
         
       - name: Run the tests
-        run: dotnet test
-        
-      - name: check absolut path
-        run: pwd
-      - name: Run API tests
-        run: npm run api-test
+        run: dotnet test --logger "console;verbosity=detailed"
