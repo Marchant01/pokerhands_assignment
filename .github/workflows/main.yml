@@ -1,48 +1,35 @@
-name: PokerHands Assignment 
+name: PokerHands Assignment - Unit Test
 
 on:
   push:
-    branches: [ "main", "dev" ]
+    branches: [ "main" ]
   pull_request:
-    branches: [ "main", "dev" ]
+    branches: [ "main" ]
 
 jobs:
 # name of the job
-  api_tests:
+  build:
     runs-on: ubuntu-20.04
+    
     steps:
-      - uses: actions/checkout@v2
-      - name: Set up Node.js
-        uses: actions/setup-node@v1
+      - name: Check out repository
+        uses: actions/checkout@v2
+      
+      - name: Set up .NET
+        uses: actions/setup-dotnet@v3
         with:
-          node-version: '20'
-      - name: Install Newman
-        run: npm install -g newman
-      - name: Install dependencies
-        run: npm ci 
-      - name: Start the server
-        run: nohup npm run start &
+          dotnet-version: '9.x'
+          
+      - name: Restore dependencies
+        run: dotnet restore
+        
+      - name: Build solution
+        run: dotnet build
+        
+      - name: Run the tests
+        run: dotnet test
+        
       - name: check absolut path
         run: pwd
       - name: Run API tests
         run: npm run api-test
-
-
-  cypress_tests:
-    needs: api_tests
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2
-      - name: Set up Node.js
-        uses: actions/setup-node@v1
-        with:
-          node-version: '20'
-      - name: Install dependencies
-        run: npm ci
-      - name: Start the server
-        run: nohup npm run start &
-      - name: Install dependencies
-        run: cd cypress && npm ci
-      
-      - name: Cypress run
-        run: npm run cy-test
